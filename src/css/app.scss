@@ -1,0 +1,118 @@
+@font-face {
+  font-family: 'Roboto-Local';
+  font-style: normal;
+  font-weight: 100;
+  src: url(./fonts/Roboto-Thin.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto-Local';
+  font-style: normal;
+  font-weight: 300;
+  src: url(./fonts/Roboto-Light.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto-Local';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./fonts/Roboto-Regular.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto-Local';
+  font-style: normal;
+  font-weight: 500;
+  src: url(./fonts/Roboto-Medium.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto-Local';
+  font-style: normal;
+  font-weight: 700;
+  src: url(./fonts/Roboto-Bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto-Local';
+  font-style: normal;
+  font-weight: 900;
+  src: url(./fonts/Roboto-Black.woff) format('woff');
+}
+
+body {
+  font-family: 'Roboto-Local', -apple-system, BlinkMacSystemFont, sans-serif;
+	background-color: $ui_passive;
+}
+
+.content {
+	height: calc(100vh - 80px);
+	max-width: 1300px;
+	width: 100%;
+	background: $white;
+	border-radius: 8px;
+	filter: $table_shad;
+}
+
+.modal {
+	min-height: 330px;
+	max-width: 450px;
+	width: 100%;
+	height: 100%;
+	background: $white;
+	border-radius: 8px;
+	filter: $table_shad;
+
+	& > * {
+		margin-bottom: 16px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+h2, .text-h2 {
+	font-weight: 500;
+	font-size: 17px;
+	line-height: 20px;
+	color: $black;
+}
+
+.q-field {
+	height: 40px;
+	width: 240px;
+
+	&__control {
+		height: 40px;
+		width: 240px;
+	}
+}
+
+.q-field--outlined .q-field__control:before {
+  border: 1px solid $ui_passive;
+}
+
+.q-placeholder {
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 14px;
+	color: $black;
+	
+	&::placeholder {
+		color: $passive;
+	}
+}
+
+.q-btn {
+	height: 40px;
+	filter: $btn_shad;
+	background-color: $link !important;
+	padding-left: 32px;
+	padding-right: 32px;
+	text-transform: none;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 14px;
+	letter-spacing: -0.01em;
+	color: $white;
+
+	&::before {
+		box-shadow: none;
+	}
+}
