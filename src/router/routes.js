@@ -1,7 +1,7 @@
 
 const routes = [
   {
-    path: '/auth',
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('src/pages/AuthPage.vue') }
@@ -9,7 +9,7 @@ const routes = [
   },
 
   {
-    path: '/',
+    path: '/board',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('src/pages/MainPage.vue') }

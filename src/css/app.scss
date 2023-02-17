@@ -56,6 +56,7 @@ body {
 	height: 100%;
 	background: $white;
 	border-radius: 8px;
+	padding: 32px;
 	filter: $table_shad;
 
 	& > * {
@@ -66,7 +67,33 @@ body {
 		}
 	}
 
-	.q-btn {
+	&__bg {
+		position: fixed;
+		width: 100vw;
+		min-height: 100vh;
+		left: 0;
+		top: 0;
+		background: rgba(0,0,0,0.7);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 24px;
+
+		& > * {
+			margin-bottom: 8px;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	.q-btn, button {
 		height: 40px;
 		filter: $btn_shad;
 		background-color: $link !important;
@@ -78,10 +105,47 @@ body {
 		line-height: 14px;
 		letter-spacing: -0.01em;
 		color: $white;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
 
 		&::before {
 			box-shadow: none;
 		}
+	}
+
+	input {
+		min-width: 240px;
+		height: 40px;
+  	border: 1px solid $ui_passive;
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 14px;
+		color: $black;
+		padding-left: 12px;
+		
+		&::placeholder {
+			color: $passive;
+		}
+	}
+
+	.q-field__control {
+		height: 40px;
+	}
+
+	.title {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 17px;
+		text-transform: uppercase;
+		color: $passive;
+	}
+
+	.info {
+		font-weight: 500;
+		font-size: 21px;
+		line-height: 24px;
+		color: $black;
 	}
 }
 
@@ -95,11 +159,6 @@ h2, .text-h2 {
 .q-field {
 	height: 40px;
 	width: 240px;
-
-	&__control {
-		height: 40px;
-		width: 240px;
-	}
 }
 
 .q-field--outlined .q-field__control:before {
@@ -159,6 +218,40 @@ h2, .text-h2 {
 		line-height: 15px;
 		color: $black;
 
+		.q-field {
+			width: 100%;
+			border-radius: 4px;
+
+			&__control {
+				min-height: unset !important;
+				height: 40px !important;
+				width: 100%;
+			}
+
+
+			&__native {
+				min-height: unset !important;
+				padding-left: 0;
+
+				span {
+					font-weight: 400;
+					font-size: 12px;
+					line-height: 14px;
+					color: $comment;
+				}
+			}
+
+			&__append {
+				min-height: unset !important;
+				height: 40px !important;
+				margin-right: -4px;
+				.q-icon {
+					background: url("data:image/svg+xml,%3Csvg width='14' height='7' viewBox='0 0 14 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2L7 5L12 2' stroke='%235584FF' stroke-width='2.16667' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") no-repeat center center;
+					color: transparent;
+				}
+			}
+		}
+
 		&:first-child {
 			font-weight: 400;
 			font-size: 12px;
@@ -177,6 +270,27 @@ h2, .text-h2 {
 
 	&__card {
 		box-shadow: none;
+	}
+
+	&__top {
+		.q-btn {
+			height: 40px;
+			filter: $btn_shad;
+			background-color: $link !important;
+			padding-left: 32px;
+			padding-right: 32px;
+			text-transform: none;
+			font-weight: 700;
+			font-size: 12px;
+			line-height: 14px;
+			letter-spacing: -0.01em;
+			color: $white;
+			border-radius: 6px;
+
+			&::before {
+				box-shadow: none;
+			}
+		}
 	}
 	
 	&__bottom {
@@ -206,6 +320,7 @@ h2, .text-h2 {
 			height: 40px;
 			border: 1px solid $ui_passive;
 			border-radius: 4px;
+			margin-right: 0;
 
 			&__native {
 				padding-left: 16px;

@@ -1,26 +1,30 @@
 import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
+import axios from "axios";
 
-// import example from './module-example'
-
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
-
-export default store(function (/* { ssrContext } */) {
+export default store(function () {
   const Store = createStore({
-    modules: {
-      // example
+    state: {
+      usersData: [],
     },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode and --debug builds only
-    strict: process.env.DEBUGGING
+    mutations: {
+      SET_USERS_DATA(state, payload) {
+        state.usersData = payload;
+      },
+    },
+    actions: {
+      async GET_USERS({ commit, state }) {
+        try {
+          const { data } = await axios.get("https://63eec3cb388920150de40329.mockapi.io/users");
+          console.log(data);
+          commit("SET_USERS_DATA", [...data]);
+        } catch (error) {
+          alert("Ошибка при запросе");
+          console.error(error);
+        }
+      },
+    },
+    modules: {},
   })
 
   return Store

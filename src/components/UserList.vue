@@ -9,20 +9,31 @@
 		:loading="loading"
 	>
 		<template v-slot:top>
-			<q-space />
 			<q-input outlined dense debounce="300" color="primary" v-model="filter" placeholder='Найти (ID, ФИО, телефон)'>
 				<template v-slot:append>
 					<q-icon name="search" />
 				</template>
 			</q-input>
 			<q-space />
+      <q-btn color="primary" :disable="loading" label="Добавить пользователя" @click="addRow" />
+		</template>
+		<template v-slot:body="props">
+			<q-tr :props="props">
+				<q-td key="id" :props="props">{{ props.row.id }}</q-td>
+				<q-td key="username" :props="props">{{ props.row.username }}</q-td>
+				<q-td key="tel" :props="props">{{ props.row.tel }}</q-td>
+				<q-td key="balance" :props="props">{{ props.row.balance }}</q-td>
+				<q-td key="status" :props="props">
+					<q-select outlined v-model="props.row.status" :options="['active', 'blocked']" />
+				</q-td>
+			</q-tr>
 		</template>
 	</q-table>
 </template>
 
 <script>
-import { ref, defineComponent, onMounted, onBeforeUnmount } from 'vue';
-import axios from "axios";
+import { ref, computed, defineComponent, onMounted, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
 
 const columns = [
   { name: 'id', align: 'center', label: 'ID', align: 'left', field: 'id', sortable: true },
@@ -34,284 +45,320 @@ const columns = [
 
 const originalRows = [
   {
-    id: "e9175af9-6713-46be-9a8c-c40923252158",
+    id: "1",
     username: 'Шевченко Вадим Александрович',
     tel: '+79129572879',
     balance: 421033.89,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "abe30c43-5c57-4df8-8a21-4c8fec578e05",
+    id: "2",
     username: 'Шашков Валерий Сергеевич',
     tel: '+79526176877',
     balance: 269594.35,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "589b62b4-546d-45d4-9da0-9ecfcc353469",
+    id: "3",
     username: 'Крапивина Елена Викторовна',
     tel: '+79129290722',
     balance: 315275.94,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "b0b8e5ef-d43f-4a3f-8782-2260a4471f8c",
+    id: "4",
     username: 'Тихомиров Николай Иванович',
     tel: '+79872365528',
     balance: 452165.55,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "9f9417c5-1efa-4ed3-b028-e2fa72392caa",
+    id: "5",
     username: 'Долгополый Сергей Константинович',
     tel: '+79171455031',
     balance: 40884.05,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "1c124f08-b29f-45d7-8025-4ffc22aacf7f",
+    id: "6",
     username: 'Ленов Николай Николаевич',
     tel: '+79278182142',
     balance: 213234.38,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "ffae4e1b-546d-4537-a3c4-7136b9966ccb",
+    id: "7",
     username: 'Смирнова Елизавета Сергеевна',
     tel: '+79506571839',
     balance: 449782.09,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "b8e74219-f90f-4ae2-89ba-74929beb5975",
+    id: "8",
     username: 'Фирсин Андрей Валерьевич',
     tel: '+79056413667',
     balance: 293547.23,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "a1732e84-234c-4234-b59b-ed6e581136c9",
+    id: "9",
     username: 'Гуторов Михаил Михайлович',
     tel: '+79046791780',
     balance: 361928.61,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "dee36058-ad3a-4569-8af4-ef6d551e0f11",
+    id: "10",
     username: 'Мельник Евгений Викторович',
     tel: '+79535348990',
     balance: 441196.11,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "d5f1a0dd-f04e-4314-b291-12f17b4122b1",
+    id: "11",
     username: 'Золотарева Лидия Александровна',
     tel: '+79288459040',
     balance: 284390.44,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "ccc425b7-db76-4a5f-adf0-a009aeb3baa7",
+    id: "12",
     username: 'Панин Никита Александрович',
     tel: '+79094344216',
     balance: 286357.89,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "2f10c946-f875-40bb-b4e1-ae06dd541e3b",
+    id: "13",
     username: 'Сарычев Александр Владимирович',
     tel: '+79643082099',
     balance: 356769.34,
     status: 'blocked',
   },
   {
-    id: "aa7d64a7-0e69-4d2e-a520-0d39035b66fa",
+    id: "14",
     username: 'Михайлов Александр Дмитриевич',
     tel: '+75296692555',
     balance: 287201.79,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "5092a324-75ff-4f9c-ae90-e8adc3c5fbc5",
+    id: "15",
     username: 'Суханов Антон Викторович',
     tel: '+79875904041',
     balance: 222070.55,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "a2b1e4e2-ac9a-40ae-ad5f-ccb26738fe9e",
+    id: "16",
     username: 'Суганов Александр Александрович',
     tel: '+79373834253',
     balance: 167552.41,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "9eb45298-24aa-490a-84e6-9d0a1b94f05d",
+    id: "17",
     username: 'Ковалев Александр Владимирович',
     tel: '+79021947501',
     balance: 125364.87,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "a5e3ddd8-8d9b-46e4-bf0b-5c21280127a0",
+    id: "18",
     username: 'Шатерников Максим Михайлович',
     tel: '+79522505290',
     balance: 96738.2,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "79f543a2-deb7-43b0-8861-4ecaa454776d",
+    id: "19",
     username: 'Дядькин Кирилл Александрович',
     tel: '+79507914339',
     balance: 123133.53,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "77d2bd53-4809-4328-b1fa-ec68428b2d94",
+    id: "20",
     username: 'Агальцов Михаил Витальевич',
     tel: '+79507908858',
     balance: 486904.66,
     status: 'blocked',
   },
   {
-    id: "457ecc9c-1678-4d58-84c7-03c51a1d372e",
+    id: "21",
     username: 'Смольницкая Елена Николаевна',
     tel: '+79045250588',
     balance: 57874.87,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "d4b3972c-72ae-4bdf-926c-a411ff3c2299",
+    id: "22",
     username: 'Роякин Владимир Михайлович',
     tel: '+79532734976',
     balance: 328261.28,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "48708620-3732-4b5e-b7a0-f4659edd89d6",
+    id: "23",
     username: 'Коновалов Тимур Игоревич',
     tel: '+79519295239',
     balance: 446899.87,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "db6f4a68-4171-4fe7-be8a-9a062bf98e27",
+    id: "24",
     username: 'Душков Николай Евгеньевич',
     tel: '+79215893790',
     balance: 408451.41,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "6084e640-a50a-4709-90c4-d7057a035512",
+    id: "25",
     username: 'Иван Иванов Иванович',
     tel: '+79218786259',
     balance: 183091.2,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "2f64f6a2-13b2-45c1-bf2b-a19f4e134d8a",
+    id: "26",
     username: 'Ложков Станислав Александрович',
     tel: '+79831253660',
     balance: 388313.9,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "3a1a0a65-5b61-495e-a0d9-972a1394cf8c",
+    id: "27",
     username: 'Лыкова Мария Александровна',
     tel: '+79506476557',
     balance: 335509.06,
     status: 'blocked',
   },
   {
-    id: "1b571dab-4515-4020-9019-ff0c1cbdb3ba",
+    id: "28",
     username: 'Александров Евгений Игоревич',
     tel: '+79102103366',
     balance: 121165.37,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "f81e4db7-d31f-4bda-83da-f2dd1e6d09b0",
+    id: "29",
     username: 'Кузьмин Александр Александрович',
     tel: '+79052324058',
     balance: 128339.21,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "49484b04-cb58-44a1-93a3-9c1916db938d",
+    id: "30",
     username: 'Лагутин Анатолий Валерьевич',
     tel: '+79184094463',
     balance: 245388.32,
     status: 'blocked',
   },
   {
-    id: "98b6ab69-762c-4774-9908-987650230974",
+    id: "31",
     username: 'Климов Александр Александрович',
     tel: '+79373513584',
     balance: 347197.97,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "c9ca54c3-bbaa-481f-b92c-3b79fd051664",
+    id: "32",
     username: 'Лебедева Валерия Витальевна',
     tel: '+79643250685',
     balance: 348785.25,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "f5e89b73-560a-42b1-b298-391defea1fd4",
+    id: "33",
     username: 'Блинов Павел Валентинович',
     tel: '+79031328227',
     balance: 238598.38,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "85aea827-a3f2-4cd1-904d-50238c6eee8b",
+    id: "34",
     username: 'Цветнов Виктор Андреевич',
     tel: '+79200366727',
     balance: 137506.12,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "00a653ad-9ae6-4215-99f8-c004ac5aed2e",
+    id: "35",
     username: 'Смирнова Светлана Михайловна',
     tel: '+79209931533',
     balance: 290204.33,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "12cc9766-57b2-4acc-8a6d-f886ac713629",
+    id: "36",
     username: 'Иванов Роман Александрович',
     tel: '+79525446057',
     balance: 285088.07,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "8c92044c-06fe-4e62-a9f6-fc740affca9a",
+    id: "37",
     username: 'Пронина Анита Сергеевна',
     tel: '+79121334119',
     balance: 326978.24,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "586cd839-2ec4-46e8-be82-e42326dce285",
+    id: "38",
     username: 'Воронов Александр Анатольевич',
     tel: '+79616675251',
     balance: 121595.52,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "c21a969a-87bd-446b-ae65-30b77c4003d0",
+    id: "39",
     username: 'Ванин Леонид Николаевич',
     tel: '+79124653248',
     balance: 117708.06,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
   {
-    id: "93bc0b04-328c-453e-a7db-b85e043aaa77",
+    id: "40",
     username: 'Кольцова Татьяна Игоревна',
     tel: '+79523742781',
     balance: 283500.02,
     status: 'active',
+		created: '16.02.2023 20:53',
   },
 ]
 
@@ -319,34 +366,70 @@ export default defineComponent({
   name: 'UserList',
 
   setup () {
+		const store = useStore();
+
     const pagination = ref({
       page: 1,
       rowsPerPage: 10
-      // rowsNumber: xx if getting data from a server
     });
     const loading = ref(false);
     const filter = ref('');
-    const rowCount = ref(10);
+    const rowCount = ref(40);
     const rows = ref([...originalRows]);
 
-		function openProfile() {
-			console.log(1);
-		}
+    function offModal(e) {
+      if (e.target.classList.value === 'modal__bg') {
+        document.querySelector('.modal__bg').removeEventListener('click', offModal);
+        e.target.remove();
+        if (loading.value) loading.value = false;
+      }
+    }
 
-		(async () => {
-			try {
-				const { data } = await axios.get("https://63eec3cb388920150de40329.mockapi.io/users");
-				console.log(data);
-			} catch (error) {
-				alert("Ошибка при запросе заказов");
-				console.error(error);
-			}
-		})();
+		function openProfile(e) {
+			if (e.target.classList.value.includes('field')) return;
+
+      const nodeIndex = Array.from(e.target.closest('tr').parentNode.children).indexOf(e.target.closest('tr'));
+
+      document.querySelector('body').insertAdjacentHTML('beforeend', `
+        <div class="modal__bg">
+          <div class="modal flex column">
+            <div class="modal__item">
+              <div class="title">ФИО</div>
+              <div class="info">${originalRows[nodeIndex].username}</div>
+            </div>
+            <div class="modal__item">
+              <div class="title">Телефон</div>
+              <div class="info">${originalRows[nodeIndex].tel}</div>
+            </div>
+            <div class="modal__item">
+              <div class="title">Баланс</div>
+              <div class="info">${originalRows[nodeIndex].balance}</div>
+            </div>
+            <div class="modal__item">
+              <div class="title">Статус</div>
+              <div class="info">${originalRows[nodeIndex].status}</div>
+            </div>
+            <div class="modal__item">
+              <div class="title">ID</div>
+              <div class="info">${originalRows[nodeIndex].id}</div>
+            </div>
+            <div class="modal__item">
+              <div class="title">Дата создания</div>
+              <div class="info">${originalRows[nodeIndex].created}</div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      document.querySelector('.modal__bg').addEventListener('click', offModal);
+		}
 
 		onMounted(() => {
 			document.querySelectorAll('.q-table tbody tr').forEach((el) => {
 				el.addEventListener('click', openProfile);
 			});
+
+      store.dispatch('GET_USERS');
 		});
 
 		onBeforeUnmount(() => {
@@ -363,6 +446,22 @@ export default defineComponent({
       loading,
       filter,
       rowCount,
+
+      addRow () {
+        loading.value = true;
+        document.querySelector('body').insertAdjacentHTML('beforeend', `
+          <div class="modal__bg">
+            <div class="modal flex flex-center column">
+              <h2 class="text-h2">Добавить пользователя</h2>
+              <input type="text" placeholder="ФИО" />
+              <input type="text" placeholder="Телефон" />
+              <button>Добавить</button>
+            </div>
+          </div>
+        `);
+
+        document.querySelector('.modal__bg').addEventListener('click', offModal);
+      },
     }
   }
 });
