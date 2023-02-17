@@ -2,6 +2,7 @@
   "name": "user-authorization",
   "version": "0.0.1",
   "description": "Just a small project",
+  "homepage": "https://twiar.github.io/user-authorization/",
   "productName": "User Authorization",
   "author": "zhitenev.andr <zhitenev.andr@gmail.com>",
   "private": true,
@@ -11,7 +12,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "build:pwa": "quasar build -m pwa"
+    "build:pwa": "quasar build -m pwa",
+    "deploy": "push-dir --dir=dist/spa --remote=gh-pages --branch=main"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
