@@ -114,7 +114,7 @@ body {
 		}
 	}
 
-	input {
+	& > input {
 		min-width: 240px;
 		height: 40px;
   	border: 1px solid $ui_passive;
