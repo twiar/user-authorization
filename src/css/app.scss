@@ -41,7 +41,7 @@ body {
 }
 
 .content {
-	max-height: calc(100vh - 80px);
+	min-height: calc(100vh - 120px);
 	max-width: 1300px;
 	width: 100%;
 	background: $white;
@@ -118,12 +118,6 @@ h2, .text-h2 {
 }
 
 .q-table {
-	thead {
-		tr {
-			height: 64px;
-		}
-	}
-
 	tr {
 		height: 64px;
 		position: relative;
@@ -136,6 +130,18 @@ h2, .text-h2 {
 			background-color: $divider;
 			left: 16px;
 			bottom: 0;
+		}
+	}
+
+	thead {
+		tr {
+			height: 64px;
+		}
+	}
+
+	tbody {
+		tr {
+			cursor: pointer;
 		}
 	}
 
@@ -165,6 +171,10 @@ h2, .text-h2 {
 		border: none;
 	}
 
+	&__container {
+		min-height: calc(100vh - 120px);
+	}
+
 	&__card {
 		box-shadow: none;
 	}
@@ -184,6 +194,7 @@ h2, .text-h2 {
 
 		span.q-table__bottom-item {
 			margin-right: 40px;
+			min-width: 80px;
 		}
 	
 		.q-table__separator {
